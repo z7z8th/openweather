@@ -1,5 +1,7 @@
 # OpenWeather
 
+**New project maintainer**: @toppk
+
 <p align="left">
     <img src="https://gitlab.com/skrewball/assets/-/raw/main/openweather-screenshot.png" width="600">
 </p>
