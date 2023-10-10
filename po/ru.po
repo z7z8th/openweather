@@ -523,7 +523,7 @@ msgstr "Торнадо"
 
 #: src/openweathermap.js:150
 msgid "Clear Sky"
-msgstr "Чистое небо"
+msgstr "Ясно"
 
 #: src/openweathermap.js:152
 msgid "Few Clouds"
@@ -535,11 +535,11 @@ msgstr "Рассеянные облака"
 
 #: src/openweathermap.js:156
 msgid "Broken Clouds"
-msgstr "Облачность с просветами"
+msgstr "Облачно с прояснениями"
 
 #: src/openweathermap.js:158
 msgid "Overcast Clouds"
-msgstr "Пасмурные облака"
+msgstr "Пасмурно"
 
 #: src/openweathermap.js:160
 msgid "Not available"
