@@ -903,7 +903,7 @@ msgstr "%s a été mis à jour"
 #: src/preferences/locationsPage.js:439
 #, javascript-format
 msgid "Are you sure you want to delete \"%s\"?"
-msgstr "Voulez-vous vraiment supprimet « %s »?"
+msgstr "Voulez-vous vraiment supprimer « %s »?"
 
 #: src/preferences/locationsPage.js:447
 msgid "Delete"
