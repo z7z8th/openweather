@@ -175,5 +175,9 @@
       <default>600</default>
       <summary>Default height for the preferences window</summary>
     </key>
+    <key type="s" name="clock-format">
+      <default>'24hr'</default>
+      <summary>Time display format</summary>
+    </key>
   </schema>
 </schemalist>

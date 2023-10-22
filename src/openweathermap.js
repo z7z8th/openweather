@@ -15,12 +15,22 @@
    Copyright 2022 Jason Oickle
 */
 
-const { Soup, GLib } = imports.gi;
-const ByteArray = imports.byteArray;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
+// const { Soup, GLib } = imports.gi;
+import GLib from 'gi://GLib';
+import Soup from 'gi://Soup';
+ 
+// this line doesn't have a Gnome 45 equivalent, according to Gnome
+// see: https://discourse.gnome.org/t/port-import-into-gnome-shell-45-format/16769
+const ByteArray = imports.byteArray; 
+
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+const {gettext: _} = Extension.defineTranslationFunctions(import.meta.url);
+
+// const ExtensionUtils = imports.misc.extensionUtils;
+// const Me = ExtensionUtils.getCurrentExtension();
+// const Me = Extension.lookupByURL(import.meta.url);
+// const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+// const _ = Gettext.gettext;
 
 // Map OpenWeatherMap icon codes to icon names
 const IconMap = {
@@ -44,7 +54,7 @@ const IconMap = {
     "50n": "weather-fog-symbolic"                // "mist night"
 }
 
-function getWeatherCondition(code) {
+export function getWeatherCondition(code) {
     switch (parseInt(code, 10)) {
         case 200: //Thunderstorm with light rain
             return _('Thunderstorm with Light Rain');
@@ -161,7 +171,7 @@ function getWeatherCondition(code) {
     }
 }
 
-async function initWeatherData(refresh) {
+export async function initWeatherData(refresh) {
     if (refresh) {
         this._lastRefresh = Date.now();
     }
@@ -186,7 +196,7 @@ async function initWeatherData(refresh) {
     }
 }
 
-async function reloadWeatherCache() {
+export async function reloadWeatherCache() {
     try {
         await this.populateCurrentUI()
         .then(async () => {
@@ -217,7 +227,7 @@ async function reloadWeatherCache() {
     }
 }
 
-async function refreshWeatherData() {
+export async function refreshWeatherData() {
     let json = undefined;
     let location = this.extractCoord(this._city);
     let params = {
@@ -253,7 +263,7 @@ async function refreshWeatherData() {
     this.reloadWeatherCurrent(this._refresh_interval_current);
 }
 
-async function refreshForecastData() {
+export async function refreshForecastData() {
     // Did the user disable the forecast?
     if (this._isForecastDisabled) {
         return;
@@ -332,7 +342,7 @@ async function refreshForecastData() {
     this.reloadWeatherForecast(this._refresh_interval_forecast);
 }
 
-function populateCurrentUI() {
+export function populateCurrentUI() {
     return new Promise((resolve, reject) => {
         try {
             let json = this.currentWeatherCache;
@@ -399,7 +409,7 @@ function populateCurrentUI() {
     });
 }
 
-function populateTodaysUI() {
+export function populateTodaysUI() {
     return new Promise((resolve, reject) => {
         try {
             // Populate today's forecast UI
@@ -437,7 +447,7 @@ function populateTodaysUI() {
     });
 }
 
-function populateForecastUI() {
+export function populateForecastUI() {
     return new Promise((resolve, reject) => {
         try {
             // Populate 5 day / 3 hour forecast UI
@@ -490,10 +500,11 @@ function populateForecastUI() {
     });
 }
 
-function loadJsonAsync(url, params) {
+export function loadJsonAsync(url, params) {
     return new Promise((resolve, reject) => {
 
         // Create user-agent string from uuid and (if present) the version
+        const Me = Extension.lookupByURL(import.meta.url);
         let _userAgent = Me.metadata.uuid;
         if (Me.metadata.version !== undefined && Me.metadata.version.toString().trim() !== '') {
             _userAgent += '/';
@@ -526,7 +537,7 @@ function loadJsonAsync(url, params) {
     });
 }
 
-function processTodaysData(json) {
+export function processTodaysData(json) {
     return new Promise((resolve, reject) => {
         try {
             let data = json.list;
@@ -543,10 +554,11 @@ function processTodaysData(json) {
     });
 }
 
-function processForecastData(json) {
+export function processForecastData(json) {
     return new Promise((resolve, reject) => {
         try {
-            let i = a = 0;
+            let i = 0;
+            let a = 0;
             let data = json.list;
             let sortedList = [];
             let _now = new Date().toLocaleDateString([this.locale]);

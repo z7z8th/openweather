@@ -15,14 +15,14 @@
    Copyright 2022 Jason Oickle
 */
 
-const {
-    Adw, Gtk, GObject, Soup, GLib
-} = imports.gi;
-const ByteArray = imports.byteArray;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
+import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk';
+import GObject from 'gi://GObject';
+import Soup from 'gi://Soup';
+import GLib from 'gi://GLib';
+
+import { gettext as _ } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
+
 // Keep enums in sync with GSettings schemas
 const GeolocationProvider = {
     OPENSTREETMAPS: 0,
@@ -30,14 +30,17 @@ const GeolocationProvider = {
     MAPQUEST: 2
 };
 
-var LocationsPage = GObject.registerClass(
-class OpenWeather_LocationsPage extends Adw.PreferencesPage {
-    _init(parent, settings) {
-        super._init({
+class LocationsPage extends Adw.PreferencesPage {
+    static {
+      GObject.registerClass(this);
+    }
+    constructor(metadata, parent, settings) {
+        super({
             title: _("Locations"),
             icon_name: 'find-location-symbolic',
             name: 'LocationsPage'
         });
+        this.metadata = metadata
         this._window = parent;
         this._settings = settings;
         this._count = null;
@@ -517,14 +520,17 @@ class OpenWeather_LocationsPage extends Adw.PreferencesPage {
         }
         return arguments[0].split(">")[0];
     }
-});
+};
 
 /*
     Search results window
 */
-var SearchResultsWindow = GObject.registerClass(
-class OpenWeather_SearchResultsWindow extends Adw.PreferencesWindow {
-    _init(parent, settings, location) {
+class SearchResultsWindow extends Adw.PreferencesWindow {
+    static {
+        GObject.registerClass(this)
+    }
+
+    constructor(metadata, parent, settings, location) {
         super._init({
             title: _("Search Results"),
             transient_for: parent,
@@ -532,6 +538,7 @@ class OpenWeather_SearchResultsWindow extends Adw.PreferencesWindow {
             modal: true
         });
         let mainPage = new Adw.PreferencesPage();
+        this.metadata = metadata;
         this.add(mainPage);
         this._window = parent;
         this._settings = settings;
@@ -686,7 +693,7 @@ class OpenWeather_SearchResultsWindow extends Adw.PreferencesWindow {
 
                 let _jsonString = _httpSession.send_and_read_finish(_message).get_data();
                 if (_jsonString instanceof Uint8Array) {
-                    _jsonString = ByteArray.toString(_jsonString);
+                    _jsonString = new TextDecoder().toString(_jsonString);
                 }
                 try {
                     if (!_jsonString) {
@@ -774,4 +781,6 @@ class OpenWeather_SearchResultsWindow extends Adw.PreferencesWindow {
         this.destroy();
         return 0;
     }
-});
+};
+
+export default LocationsPage;

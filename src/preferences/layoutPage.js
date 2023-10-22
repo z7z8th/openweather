@@ -15,19 +15,18 @@
    Copyright 2022 Jason Oickle
 */
 
-const {
-    Adw, Gtk, GObject
-} = imports.gi;
+import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk';
+import GObject from 'gi://GObject';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
+import { gettext as _ } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
-var LayoutPage = GObject.registerClass(
-class OpenWeather_LayoutPage extends Adw.PreferencesPage {
-    _init(settings) {
-        super._init({
+class LayoutPage extends Adw.PreferencesPage {
+    static {
+        GObject.registerClass(this)
+    }
+    constructor(metadata, settings) {
+        super({
             title: _("Layout"),
             icon_name: 'preferences-other-symbolic',
             name: 'LayoutPage'
@@ -328,4 +327,6 @@ class OpenWeather_LayoutPage extends Adw.PreferencesPage {
         }
         return false;
     }
-});
+};
+
+export default LayoutPage;
