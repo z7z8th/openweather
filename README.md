@@ -1,4 +1,4 @@
-# OpenWeather
+# OpenWeather (Gnome Shell 46 compatible)
 
 **New project maintainer**: @toppk
 
