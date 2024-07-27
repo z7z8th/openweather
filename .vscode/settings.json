@@ -1,0 +1,12 @@
+{
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.singleQuote": true,
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "none",
+    "prettier.proseWrap": "always",
+    "prettier.printWidth": 90
+}
